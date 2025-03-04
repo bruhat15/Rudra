@@ -14,7 +14,6 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
     numerical_cols = df.select_dtypes(include=['number']).columns
     df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
     return df
-from sklearn.preprocessing import LabelEncoder
 
 def encode_features(df: pd.DataFrame) -> pd.DataFrame:
     """ Encodes categorical columns using One-Hot Encoding for multi-class variables  
