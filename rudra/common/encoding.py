@@ -1,4 +1,5 @@
 from sklearn.preprocessing import LabelEncoder
+import pandas as pd
 def encode_features(df: pd.DataFrame) -> pd.DataFrame:
     """ Encodes categorical columns using One-Hot Encoding for multi-class variables  
     and Label Encoding for binary categories."""
