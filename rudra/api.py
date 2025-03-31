@@ -2,7 +2,7 @@ import pandas as pd
 import google.generativeai as genai
 
 # Replace with your actual API key
-genai.configure(api_key="AIzaSyDKEBpe-jUkGjrqSpMyD81S1Wqi3WF9Xzg")
+genai.configure(api_key="AIzaSyBHMUwfsPEbWofnnTBjcIK2wUZR9t_R_qY")
 
 def preprocess_AI(df: pd.DataFrame, intent: str) -> pd.DataFrame:
     """
