@@ -6,7 +6,8 @@ import os
 # Add the repo directory to sys.path so pytest can find the module
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-import preprocess_tree_based as tbp
+from rudra import preprocess_tree_based as ptb
+
 
 @pytest.fixture
 def sample_data():
