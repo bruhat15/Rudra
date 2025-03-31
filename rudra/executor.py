@@ -1,12 +1,13 @@
 import pandas as pd
-from common.null_values import (
+from rudra.common.null_values import (
     drop_rows_with_excess_nulls,
     drop_columns_with_excess_nulls,
     impute_missing_numeric,
     impute_missing_categorical
 )
-from common.encoding import encode_features
-from common.scaling import normalize  # Using normalization from scaling.py
+from rudra.common.encoding import encode_features
+from rudra.common.scaling import normalize  # Using normalization from scaling.py
+
 
 def preprocess_distance_data(df: pd.DataFrame) -> pd.DataFrame:
     """
