@@ -6,8 +6,7 @@ from rudra.common.null_values import (
     impute_missing_categorical
 )
 from rudra.common.encoding import encode_features
-from rudra.common.scaling import normalize  # Using normalization from scaling.py
-
+from rudra.common.scaling import normalize
 
 def preprocess_distance_data(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -32,6 +31,10 @@ def preprocess_distance_data(df: pd.DataFrame) -> pd.DataFrame:
     Returns:
         pd.DataFrame: Processed DataFrame.
     """
+    # Handle empty DataFrame
+    if df.empty:
+        return df
+        
     # --- Step 1: Filter out rows/columns with excessive nulls ---
     row_threshold = 0.5  # Drop row if > 50% values are missing
     col_threshold = 0.4  # Drop column if > 40% values are missing
