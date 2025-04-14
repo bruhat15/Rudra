@@ -7,6 +7,7 @@ from rudra.common.null_values import (
 )
 from rudra.common.encoding import encode_features
 from rudra.common.scaling import normalize
+from rudra.common.outlier_detection import detect_and_handle_outliers
 
 def preprocess_distance_data(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -62,6 +63,63 @@ def preprocess_distance_data(df: pd.DataFrame) -> pd.DataFrame:
     
     return df
 
+def preprocess_data(file_path: str,
+                    null_threshold_row: float = 0.5,
+                    null_threshold_col: float = 0.5,
+                    outlier_method: str = 'iqr',
+                    outlier_handling: str = 'median',
+                    scale_method: str = 'standard') -> pd.DataFrame:
+    """
+    Preprocesses the CSV dataset for linear regression, including:
+    - Handling missing values
+    - Detecting and handling outliers
+    - Encoding categorical variables
+    - Scaling numerical features
+    
+    Parameters:
+    -----------
+    file_path : str
+        Path to the CSV file to preprocess
+    null_threshold_row : float, optional
+        Threshold for dropping rows with too many null values, by default 0.5
+    null_threshold_col : float, optional
+        Threshold for dropping columns with too many null values, by default 0.5
+    outlier_method : str, optional
+        Method to detect outliers ('iqr', 'zscore', 'isolation_forest'), by default 'iqr'
+    outlier_handling : str, optional
+        How to handle outliers ('remove', 'mean', 'median'), by default 'median'
+    scale_method : str, optional
+        Method to scale numerical features ('minmax', 'standard'), by default 'standard'
+        
+    Returns:
+    --------
+    pd.DataFrame
+        Preprocessed DataFrame
+    """
+    # Load the dataset
+    df = pd.read_csv(file_path)
+    
+    # Handle missing values
+    df = drop_rows_with_excess_nulls(df, null_threshold_row)
+    df = drop_columns_with_excess_nulls(df, null_threshold_col)
+    df = impute_missing_numeric(df)
+    df = impute_missing_categorical(df)
+    
+    # Detect and handle outliers
+    df = detect_and_handle_outliers(df, method=outlier_method, handling=outlier_handling)
+    
+    # Encode categorical variables
+    df = encode_features(df)
+    
+    # Scale numerical features
+    if scale_method == 'minmax':
+        from rudra.common.scaling import min_max_scale
+        df = min_max_scale(df)
+    else:  # standard scaling
+        df = normalize(df)
+    
+    return df
+
 if __name__ == "__main__":
     # --- Test the Distance-Based Preprocessing Pipeline ---
     data = {
@@ -79,64 +137,4 @@ if __name__ == "__main__":
     
     print("\n✅ Processed DataFrame for Distance-Based Models:")
     print(processed_df)
-
-
-
-import pandas as pd
-from encoding import encode_features  # Function from encoding.py
-from null_values import (drop_rows_with_excess_nulls, drop_columns_with_excess_nulls,
-                         impute_missing_numeric, impute_missing_categorical)  # Functions from null_values.py
-from outlier_detection import detect_and_handle_outliers  # Function from outlier_detection.py
-from scaling import min_max_scale, normalize  # Functions from scaling.py
-
-def preprocess_data(file_path: str,
-                    null_threshold_row: float = 0.5,
-                    null_threshold_col: float = 0.5,
-                    outlier_method: str = 'iqr',
-                    outlier_handling: str = 'median',
-                    scale_method: str = 'standard') -> pd.DataFrame:
-    """
-    Preprocesses the CSV dataset for linear regression, including:
-    - Handling missing values
-    - Detecting and handling outliers
-    - Encoding categorical variables
-    - Scaling the features
-
-    Parameters:
-    - file_path (str): Path to the CSV file.
-    - null_threshold_row (float): Threshold for dropping rows with excess nulls (0-1).
-    - null_threshold_col (float): Threshold for dropping columns with excess nulls (0-1).
-    - outlier_method (str): Method for outlier detection ('iqr', 'zscore', or 'isolation_forest').
-    - outlier_handling (str): How to handle outliers ('remove', 'mean', or 'median').
-    - scale_method (str): Method for scaling ('standard' for Z-score normalization or 'minmax' for Min-Max scaling).
-
-    Returns:
-    - pd.DataFrame: Preprocessed DataFrame ready for modeling.
-    """
-    # Step 1: Load dataset
-    df = pd.read_csv(file_path)
-
-    # Step 2: Handle missing values
-    df = drop_rows_with_excess_nulls(df, threshold=null_threshold_row)  # Drop rows with too many nulls
-    df = drop_columns_with_excess_nulls(df, threshold=null_threshold_col)  # Drop columns with too many nulls
-    df = impute_missing_numeric(df)  # Impute numeric columns with mean
-    df = impute_missing_categorical(df)  # Impute categorical columns with mode
-
-    # Step 3: Detect and handle outliers
-    # You may call detect_and_handle_outliers for outlier detection
-    # Since it's saving a file, we'll skip calling it here. You can also modify the function to return the processed dataframe.
-    detect_and_handle_outliers(method=outlier_method, handling=outlier_handling, save_path='outlier_free_dataset.csv')
-
-    # Step 4: Encode categorical features
-    df = encode_features(df)  # Encode categorical columns using One-Hot and Label Encoding
-
-    # Step 5: Scale features (based on chosen scaling method)
-    if scale_method == 'minmax':
-        df = min_max_scale(df)  # Apply Min-Max scaling
-    elif scale_method == 'standard':
-        df = normalize(df)  # Apply Z-score normalization
-    else:
-        raise ValueError("Invalid scale method. Choose 'standard' or 'minmax'.")
-
-    return df
 
