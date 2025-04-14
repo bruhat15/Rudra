@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  rudra:
+    build: .
+    volumes:
+      - .:/app
+    command: python -m pytest
+    environment:
+      - PYTHONPATH=/app 

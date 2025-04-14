@@ -1,1 +1,13 @@
-__pycache__/\n*.pyc\n*.pyo\n.env\n*.DS_Store\n
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.DS_Store
+.pytest_cache/
+rudra.egg-info/
+.coverage
+htmlcov/
+.DS_Store
+.idea/
+.vscode/
+*.log
