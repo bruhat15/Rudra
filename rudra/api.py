@@ -109,7 +109,10 @@ def main():
     
     api_key = None
     if use_ai:
-        api_key = input("Enter your Gemini API key (or press Enter to skip): ").strip() or None
+        api_key = input("Enter your Gemini API key (or press Enter to use default): ").strip()
+        if not api_key:
+            # ⚠️ Default fallback API key (for testing only)
+            api_key = "AIzaSyCcpI1-seLHcYTzC6po-IADi8ZR65Er99g"
     
     # Process data
     processed_df = preprocess_with_ai(df, intent, api_key)

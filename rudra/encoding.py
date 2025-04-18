@@ -1,4 +1,5 @@
 # rudra/encoding.py
+
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
@@ -16,6 +17,7 @@ def encode_categoricals_method(df: pd.DataFrame) -> pd.DataFrame:
     
     label_encoder = LabelEncoder()
     
+    # Apply Label Encoding to each categorical column
     for col in categorical_cols:
         df[col] = label_encoder.fit_transform(df[col].astype(str))  # Convert to string and apply encoding
     
