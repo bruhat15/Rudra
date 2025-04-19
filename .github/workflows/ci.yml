@@ -1,28 +1,66 @@
-name: CI
+# .github/workflows/ci_pipeline.yml
 
+name: Rudra CI Pipeline # Name of the workflow displayed on GitHub Actions tab
+
+# Controls when the workflow will run
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ] # Run on pushes to the main branch
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ] # Run on pull requests targeting the main branch
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  # Define a single job called "build-and-test"
+  build-and-test:
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    strategy:
+      matrix:
+        # Test on multiple Python versions (adjust as needed)
+        python-version: ["3.9", "3.10", "3.11"]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # 1. Get the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Use the standard checkout action
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      # 2. Set up the specified Python version
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip' # Enable caching for pip dependencies
 
+      # 3. Install dependencies
+      # It's good practice to include build tools and testing/linting tools here
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install flake8 pytest black isort # Install linters and test runner
+          pip install -r requirements.txt      # Install library/app dependencies
 
+      # 4. Lint with flake8, black, and isort
+      # Add --ignore or --exclude flags if needed for flake8
+      # Add file/directory paths if you don't want to check the whole repo
+      - name: Lint code
+        run: |
+          echo "Running flake8..."
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+          echo "Running black check..."
+          black --check .
+          echo "Running isort check..."
+          isort --check-only .
+
+      # 5. Run tests with pytest
       - name: Run tests
         run: |
           pytest
+
+      # (Optional) 6. Build the package to ensure it works
+      # - name: Build package
+      #   run: |
+      #     pip install build # Ensure build tool is installed
+      #     python -m build
