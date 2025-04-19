@@ -63,7 +63,7 @@ def capture_processing_output(func, *args, **kwargs):
 
 # --- Sidebar ---
 with st.sidebar:
-    st.image(r"C:\Users\kulka\Downloads\rudra_logo.png", width=64) # Placeholder icon
+    st.image("assets/rudra_logo.png", width=64) # Placeholder icon
     st.title("RUDRA Setup")
     st.markdown("Upload your dataset and choose a preprocessing family.")
 
