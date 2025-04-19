@@ -199,7 +199,7 @@ if st.session_state.original_df is None:
             </p>
 
             <p style="text-align:center; margin-top:1.5rem;">
-                <a href="https://github.com/your_username/rudra" 
+                <a href="https://github.com/bruhat15/Rudra" 
                 style="
                     background: #FACC15;
                     color: #111;
@@ -514,15 +514,44 @@ else:
     # --- FAQ Section (Example) ---
     st.divider()
     st.header("❓ Frequently Asked Questions")
+    
+    # --- Provided Example 1 ---
     with st.expander("What encoding strategy should I choose?"):
         st.markdown("""
             *   **One-Hot Encoding (OHE):** Generally recommended for **Linear Models (Regression-Based)** and **Distance-Based Models**. It avoids creating artificial order between categories. Can increase dimensionality significantly for high-cardinality features.
             *   **Label Encoding:** Mainly suitable for **Tree-Based Models** where the numerical split points handle the encoded values. Can also be used for LightGBM/CatBoost *native* categorical handling (requires specific parameters during model training). Avoid for linear/distance models unless categories have a true inherent order.
         """)
+    
+    # --- Provided Example 2 ---
     with st.expander("Why is scaling important?"):
         st.markdown("""
             Scaling (like Standard or MinMax) ensures that features with larger value ranges don't disproportionately influence models that rely on distances or magnitudes.
             *   **CRITICAL** for **Distance-Based Models** (KNN, SVM, Clustering) and **Regression Models** (Linear, Ridge, Lasso, SVR).
             *   **NOT needed** for **Tree-Based Models** (Decision Tree, Random Forest, GBM, XGBoost), as they split features one at a time irrespective of scale.
         """)
-    # Add more FAQs as needed
+    
+    # --- Rewritten FAQ 1 ---
+    with st.expander("Are there any limitations to the tool?"):
+        st.markdown("""
+            Rudra's handy, but not limitless! Keep these in mind:
+            *   **Big Data Blues:** Large files might hit memory limits (especially on free hosting).
+            *   **Keep it Simple:** Super complex or niche preprocessing might need custom code.
+            *   **Defaults ≠ Perfect:** Our settings are smart starting points, but your data might need extra TLC.
+            *   **Cleaner, Not Creator:** We tidy up features, we don't invent new ones (that's feature engineering!).
+        """)
+    
+    # --- Rewritten FAQ 2 ---
+    with st.expander("What does \"Native Categorical Handling\" mean for LightGBM / CatBoost?"):
+        st.markdown("""
+            Think of it like a shortcut! These clever models can understand text categories *directly*, often skipping the need for manual One-Hot Encoding. Rudra sets things up so they can work their magic – potentially faster and sometimes even better!
+        """)
+    
+    # --- Rewritten FAQ 3 ---
+    with st.expander("What should I do if I encounter an error?"):
+        st.markdown("""
+            Uh oh! Before sounding the alarm, try these quick checks:
+            *   **Clean CSV?:** Is your file format okay? No weird characters or messy rows?
+            *   **Train/Test Twins?:** If using both, do they have the same columns?
+            *   **Simplify:** Try turning off an option (like outlier handling) – did that fix it?
+            *   **Still Stuck?:** The issue might be specific to your data. *(Consider adding: Reach out on GitHub [Link] if the problem persists!)*
+        """)
