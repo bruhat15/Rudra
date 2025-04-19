@@ -1,0 +1,81 @@
+# Rudra/.gitignore
+
+# --- Secrets ---
+# NEVER commit secrets!
+.streamlit/secrets.toml
+.streamlit
+
+# Add this line to your .gitignore
+rudra/share/
+
+# --- Python ---
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+# Usually these files are created by PyInstaller. More info:
+# https://pyinstaller.readthedocs.io/en/stable/spec-files.html
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Environments (!!! IMPORTANT !!!)
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+# If your venv is named 'rudra' and lives *inside* the project root:
+rudra/Lib/ # This might be too broad if 'rudra' is also your library - see VENV section below
+
+# --- IDE / Editor ---
+.idea/
+.vscode/
+*.swp
+*~
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
