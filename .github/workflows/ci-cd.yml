@@ -59,12 +59,19 @@ jobs:
         with:
           images: bruhat15/rudra-app 
           tags: |
-            # tag latest on push to main
-            type=branch,event=push,enable=${{ github.ref == 'refs/heads/main' }}
-            # tag with git sha on push to main
-            type=sha,prefix=,event=push,enable=${{ github.ref == 'refs/heads/main' }},suffix=-{{date 'YYYYMMDD'}}
-            # tag with release version (e.g., v1.0.0) when a release is published
-            type=ref,event=release
+            # Tag 'latest' on push to the main branch
+            type=edge,branch=main
+
+            # Tag with commit SHA (short 8 chars) and date on push to main branch
+            type=sha,prefix=sha-,suffix=-{{date 'YYYYMMDD'}},event=push,enable=${{ github.ref == 'refs/heads/main' }}
+
+            # Tag with the release version (e.g., v1.2.3) when a release is published
+            type=ref,event=tag # Use event=tag for release tags
+            type=ref,event=pr # Optional: Tag for pull requests (e.g., pr-123)
+
+            # Add 'latest' tag also for published releases (optional but common)
+            type=semver,pattern={{version}},enable=${{ github.event_name == 'release' }} # Extracts semver from tag
+            type=raw,value=latest,enable=${{ github.event_name == 'release' }}
 
       # --- Build and push image ---
       - name: Build and push Docker image
