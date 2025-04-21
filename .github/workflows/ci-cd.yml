@@ -94,7 +94,7 @@ jobs:
       - name: Trivy scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'adityamaller/rudra:latest'
+          image-ref: 'bruhat15/rudra-app:latest'
           exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
