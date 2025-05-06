@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  devops-tests:
+  devops-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,6 +22,6 @@ jobs:
           pip install -r requirements.txt
           pip install pytest docker
       
-      - name: Run docker tests
+      - name: Run devops tests
         run: |
           pytest test/devops/test_docker_setup.py
