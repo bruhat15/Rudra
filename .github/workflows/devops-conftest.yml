@@ -1,25 +1,27 @@
-name: DevOps Conftest
+name: DevOps Tests
 
 on:
   push:
   pull_request:
 
 jobs:
-  devops-conftest-test:
+  devops-tests:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pytest
-        pip install docker
-    - name: Run devops conftest
-      run: |
-        pytest test/devops/conftest.py
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest docker
+      
+      - name: Run docker tests
+        run: |
+          pytest test/devops/test_docker_setup.py
