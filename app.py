@@ -22,7 +22,7 @@ except ImportError as e:
 
 # --- Page Configuration (Optional but Recommended) ---
 st.set_page_config(
-    page_title="RUDRA ML Preprocessor",
+    page_title="RUDRA ML Preprocessor APP",
     page_icon="✨",
     layout="wide", # Use wide layout for better dataframe display
     initial_sidebar_state="expanded"
